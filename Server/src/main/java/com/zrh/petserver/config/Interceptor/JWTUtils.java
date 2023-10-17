@@ -16,13 +16,23 @@ public class JWTUtils {
     public static final String SECRET = "SECRET";
 
     //签发token
-    public static String sign(JSONObject jsonObject){
+    public static String createToken(JSONObject jsonObject){
         Date expireDate = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         return JWT.create()
-                .withKeyId("123")
-                .withClaim("account", jsonObject.getString("account"))
-                .withClaim("userName", jsonObject.getString("userID"))
-                .withClaim("empCode", jsonObject.getString("code"))
+                .withKeyId(jsonObject.getString("keyID"))
+                .withAudience(jsonObject.getString("audience"))
+                .withClaim("code",jsonObject.getString("code"))
+                .withExpiresAt(expireDate)
+                .sign(Algorithm.HMAC256(SECRET));
+    }
+
+    public static String createToken(){
+        Date expireDate = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+
+
+        return JWT.create()
+                .withKeyId(jsonObject.getString("keyID"))
+                .withAudience(jsonObject.getString("audience"))
                 .withExpiresAt(expireDate)
                 .sign(Algorithm.HMAC256(SECRET));
     }
@@ -33,6 +43,7 @@ public class JWTUtils {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
             DecodedJWT decodedJWT  = verifier.verify(token);
             Date expiresAt = decodedJWT.getExpiresAt();
+            String audience = decodedJWT.getAudience().get(0);
 
             return true;
         }catch (Exception e){
