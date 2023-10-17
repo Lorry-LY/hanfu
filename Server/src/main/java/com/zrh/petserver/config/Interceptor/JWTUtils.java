@@ -31,8 +31,6 @@ public class JWTUtils {
 
 
         return JWT.create()
-                .withKeyId(jsonObject.getString("keyID"))
-                .withAudience(jsonObject.getString("audience"))
                 .withExpiresAt(expireDate)
                 .sign(Algorithm.HMAC256(SECRET));
     }
