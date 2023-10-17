@@ -10,7 +10,6 @@ public class UserMapper {
         JSONObject jsonObject = new JSONObject();
 
 
-
         return jsonObject;
     }
 

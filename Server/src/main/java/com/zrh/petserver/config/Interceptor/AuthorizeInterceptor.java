@@ -19,11 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import java.lang.reflect.Method;
 
 public class AuthorizeInterceptor implements HandlerInterceptor {
-    @Resource
-    UserMapper userMapper;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
+        HandlerInterceptor.super.preHandle(httpServletRequest, httpServletResponse, object);
         // 从 http 请求头中取出 token
         String token = httpServletRequest.getHeader("token");
         // 如果不是映射到方法直接通过
@@ -44,43 +43,29 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {
                 // 执行认证
-                if (token == null) {
-                    throw new RuntimeException("无token，请重新登录");
+                if (token == null) return false;
+                if(!JWTUtils.verify(token))return false;
+                if(JWTUtils.isOverTime(token)){
+                    String new_token = JWTUtils.updateToken(token);
+                    httpServletResponse.addHeader("token",new_token);
                 }
-                // 获取 token 中的 user id
-                String userID;
-                try {
-                    userID = JWT.decode(token).getAudience().get(0);
-                } catch (JWTDecodeException j) {
-                    throw new RuntimeException("401");
-                }
-                JSONObject user = userMapper.findUserByUserID(userID);
-                if (user == null) {
-                    throw new RuntimeException("用户不存在，请重新登录");
-                }
-                // 验证 token
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getString("password"))).build();
-                try {
-                    jwtVerifier.verify(token);
-                } catch (JWTVerificationException e) {
-                    throw new RuntimeException("401");
-                }
-                return true;
             }
         }
         return true;
     }
 
+
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest,
-                           HttpServletResponse httpServletResponse,
-                           Object o, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
 
     }
+
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest,
                                 HttpServletResponse httpServletResponse,
-                                Object o, Exception e) throws Exception {
+                                Object object, Exception exception) throws Exception {
+        HandlerInterceptor.super.afterCompletion(httpServletRequest,httpServletResponse,object,exception);
     }
 
 }
