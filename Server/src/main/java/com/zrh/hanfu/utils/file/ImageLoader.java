@@ -1,4 +1,4 @@
-package com.zrh.petserver.utils.file;
+package com.zrh.hanfu.utils.file;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

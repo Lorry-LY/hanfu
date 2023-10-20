@@ -1,6 +1,7 @@
-package com.zrh.petserver.utils.message;
+package com.zrh.hanfu.utils.message;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
+import org.apache.el.stream.Optional;
 
 public class FatalMessage extends ResponseMessage{
 
@@ -9,7 +10,7 @@ public class FatalMessage extends ResponseMessage{
         jsonObject.put("message", message);
         jsonObject.put("success", false);
         jsonObject.put("type", "error");
-        jsonObject.put("data", JSONObject.NULL);
+        jsonObject.put("data", null);
     }
 
     public JSONObject getMessage() {

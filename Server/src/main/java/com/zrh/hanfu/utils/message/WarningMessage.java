@@ -1,6 +1,6 @@
-package com.zrh.petserver.utils.message;
+package com.zrh.hanfu.utils.message;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 
 public class WarningMessage extends ResponseMessage {
 
@@ -9,7 +9,7 @@ public class WarningMessage extends ResponseMessage {
         jsonObject.put("message", message);
         jsonObject.put("success", false);
         jsonObject.put("type", "warning");
-        jsonObject.put("data", JSONObject.NULL);
+        jsonObject.put("data", null);
     }
 
     public JSONObject getMessage() {

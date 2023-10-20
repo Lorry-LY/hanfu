@@ -1,17 +1,10 @@
-package com.zrh.petserver.config.Interceptor;
+package com.zrh.hanfu.config.Interceptor;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.zrh.petserver.dao.UserMapper;
-import com.zrh.petserver.utils.annotation.PassToken;
-import com.zrh.petserver.utils.annotation.UserLoginToken;
-import jakarta.annotation.Resource;
+import com.zrh.hanfu.utils.annotation.AddToken;
+import com.zrh.hanfu.utils.annotation.PassToken;
+import com.zrh.hanfu.utils.annotation.UserLoginToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.json.JSONObject;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,6 +44,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
                 }
             }
         }
+
         return true;
     }
 

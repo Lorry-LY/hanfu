@@ -1,9 +1,9 @@
-package com.zrh.petserver.config.Interceptor;
+package com.zrh.hanfu.config.Interceptor;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.zrh.petserver.dao.UserMapper;
+import com.zrh.hanfu.dao.UserMapper;
 import jakarta.annotation.Resource;
 import org.json.JSONObject;
 

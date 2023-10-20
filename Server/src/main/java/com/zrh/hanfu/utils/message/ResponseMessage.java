@@ -1,7 +1,7 @@
-package com.zrh.petserver.utils.message;
+package com.zrh.hanfu.utils.message;
 
 
-import org.json.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 
 public abstract class ResponseMessage {
 
