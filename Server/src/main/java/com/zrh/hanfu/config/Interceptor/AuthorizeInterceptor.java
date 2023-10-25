@@ -1,28 +1,35 @@
 package com.zrh.hanfu.config.Interceptor;
 
+import com.zrh.hanfu.controller.UserController;
 import com.zrh.hanfu.utils.annotation.AddToken;
+import com.zrh.hanfu.utils.annotation.DeleteToken;
 import com.zrh.hanfu.utils.annotation.PassToken;
 import com.zrh.hanfu.utils.annotation.UserLoginToken;
+import com.zrh.hanfu.utils.message.NoTokenMessage;
+import com.zrh.hanfu.utils.message.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 
 public class AuthorizeInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
-        HandlerInterceptor.super.preHandle(httpServletRequest, httpServletResponse, object);
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
+        HandlerInterceptor.super.preHandle(request, response, object);
+
+        response.setCharacterEncoding("UTF-8");
+
         // 从 http 请求头中取出 token
-        String token = httpServletRequest.getHeader("token");
+        String token = request.getHeader("token");
         // 如果不是映射到方法直接通过
-        if(!(object instanceof HandlerMethod)){
-            return true;
-        }
-        HandlerMethod handlerMethod=(HandlerMethod)object;
+        if(!(object instanceof HandlerMethod handlerMethod))return true;
+
         Method method=handlerMethod.getMethod();
         //检查是否有PassToken注释，有则跳过认证
         if (method.isAnnotationPresent(PassToken.class)) {
@@ -36,11 +43,11 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {
                 // 执行认证
-                if (token == null) return false;
-                if(!JWTUtils.verify(token))return false;
+                if (token == null)return returnError(response,new NoTokenMessage());
+                if(!JWTUtils.verify(token))return returnError(response,new NoTokenMessage());
                 if(JWTUtils.isOverTime(token)){
                     String new_token = JWTUtils.updateToken(token);
-                    httpServletResponse.addHeader("token",new_token);
+                    response.addHeader("token",new_token);
                 }
             }
         }
@@ -49,9 +56,36 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
     }
 
 
+    private boolean returnError(HttpServletResponse response, ResponseMessage message) throws Exception{
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+        writer.print(message.getMessage());
+        writer.close();
+        return false;
+    }
+
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object, ModelAndView modelAndView) throws Exception {
+        HandlerInterceptor.super.postHandle(request, response, object, modelAndView);
+
+        // 添加Token
+        if(!(object instanceof HandlerMethod handlerMethod))return;
+        Method method=handlerMethod.getMethod();
+        //检查是否有PassToken注释，有则跳过认证
+        if (method.isAnnotationPresent(AddToken.class)) {
+            AddToken addToken = method.getAnnotation(AddToken.class);
+            if (addToken.required()) {
+
+            }
+        }
+        // 删除Token
+        if (method.isAnnotationPresent(DeleteToken.class)) {
+            DeleteToken deleteToken = method.getAnnotation(DeleteToken.class);
+            if (deleteToken.required()) {
+
+            }
+        }
+
 
     }
 
@@ -60,6 +94,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
                                 HttpServletResponse httpServletResponse,
                                 Object object, Exception exception) throws Exception {
         HandlerInterceptor.super.afterCompletion(httpServletRequest,httpServletResponse,object,exception);
+
     }
 
 }

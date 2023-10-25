@@ -8,10 +8,10 @@
         <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.lorry</groupId>
-    <artifactId>PetServer</artifactId>
+    <groupId>com.zrh</groupId>
+    <artifactId>hanfu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>PetServer</name>
+    <name>hanfu</name>
     <description>PetServer</description>
     <properties>
         <java.version>20</java.version>
