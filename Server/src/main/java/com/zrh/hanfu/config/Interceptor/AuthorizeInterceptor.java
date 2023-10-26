@@ -1,11 +1,8 @@
 package com.zrh.hanfu.config.Interceptor;
 
-import com.zrh.hanfu.controller.UserController;
-import com.zrh.hanfu.utils.annotation.AddToken;
-import com.zrh.hanfu.utils.annotation.DeleteToken;
 import com.zrh.hanfu.utils.annotation.PassToken;
 import com.zrh.hanfu.utils.annotation.UserLoginToken;
-import com.zrh.hanfu.utils.message.NoTokenMessage;
+import com.zrh.hanfu.utils.message.ErrorMessage;
 import com.zrh.hanfu.utils.message.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.Enumeration;
 
 public class AuthorizeInterceptor implements HandlerInterceptor {
 
@@ -23,36 +19,38 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
         HandlerInterceptor.super.preHandle(request, response, object);
 
-        response.setCharacterEncoding("UTF-8");
+        try {
 
-        // 从 http 请求头中取出 token
-        String token = request.getHeader("token");
-        // 如果不是映射到方法直接通过
-        if(!(object instanceof HandlerMethod handlerMethod))return true;
+            response.setCharacterEncoding("UTF-8");
 
-        Method method=handlerMethod.getMethod();
-        //检查是否有PassToken注释，有则跳过认证
-        if (method.isAnnotationPresent(PassToken.class)) {
-            PassToken passToken = method.getAnnotation(PassToken.class);
-            if (passToken.required()) {
-                return true;
-            }
-        }
-        //检查有没有需要用户权限的注解
-        if (method.isAnnotationPresent(UserLoginToken.class)) {
-            UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
-            if (userLoginToken.required()) {
-                // 执行认证
-                if (token == null)return returnError(response,new NoTokenMessage());
-                if(!JWTUtils.verify(token))return returnError(response,new NoTokenMessage());
-                if(JWTUtils.isOverTime(token)){
-                    String new_token = JWTUtils.updateToken(token);
-                    response.addHeader("token",new_token);
+            // 从 http 请求头中取出 token
+            String token = request.getHeader("token");
+            // 如果不是映射到方法直接通过
+            if (!(object instanceof HandlerMethod handlerMethod)) return true;
+
+            Method method = handlerMethod.getMethod();
+            //检查是否有PassToken注释，有则跳过认证
+            if (method.isAnnotationPresent(PassToken.class)) {
+                PassToken passToken = method.getAnnotation(PassToken.class);
+                if (passToken.required()) {
+                    return true;
                 }
             }
+            //检查有没有需要用户权限的注解
+            if (method.isAnnotationPresent(UserLoginToken.class)) {
+                UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
+                if (userLoginToken.required()) {
+                    // 执行认证
+                    if (token == null) return returnError(response, new ErrorMessage("no token!!"));
+                    if (!JWTUtils.verify(token)) return returnError(response, new ErrorMessage("token wrong!!"));
+                    if (JWTUtils.isOverTime(token)) return returnError(response,new ErrorMessage("token overtime!!"));
+                }
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return returnError(response, new ErrorMessage("token verify wrong!!"));
         }
-
-        return true;
     }
 
 
@@ -68,23 +66,23 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object, ModelAndView modelAndView) throws Exception {
         HandlerInterceptor.super.postHandle(request, response, object, modelAndView);
 
-        // 添加Token
-        if(!(object instanceof HandlerMethod handlerMethod))return;
-        Method method=handlerMethod.getMethod();
-        //检查是否有PassToken注释，有则跳过认证
-        if (method.isAnnotationPresent(AddToken.class)) {
-            AddToken addToken = method.getAnnotation(AddToken.class);
-            if (addToken.required()) {
-
-            }
-        }
-        // 删除Token
-        if (method.isAnnotationPresent(DeleteToken.class)) {
-            DeleteToken deleteToken = method.getAnnotation(DeleteToken.class);
-            if (deleteToken.required()) {
-
-            }
-        }
+//        // 添加Token
+//        if(!(object instanceof HandlerMethod handlerMethod))return;
+//        Method method=handlerMethod.getMethod();
+//        //检查是否有PassToken注释，有则跳过认证
+//        if (method.isAnnotationPresent(AddToken.class)) {
+//            AddToken addToken = method.getAnnotation(AddToken.class);
+//            if (addToken.required()) {
+//
+//            }
+//        }
+//        // 删除Token
+//        if (method.isAnnotationPresent(DeleteToken.class)) {
+//            DeleteToken deleteToken = method.getAnnotation(DeleteToken.class);
+//            if (deleteToken.required()) {
+//
+//            }
+//        }
 
 
     }
