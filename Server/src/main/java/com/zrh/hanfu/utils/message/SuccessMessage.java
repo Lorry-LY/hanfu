@@ -5,25 +5,26 @@ import com.alibaba.fastjson2.JSONObject;
 public class SuccessMessage<T> extends ResponseMessage {
 
     public SuccessMessage(T data) {
-        jsonObject.put("code", 200);
-        jsonObject.put("success", true);
-        jsonObject.put("type", "success");
+        jsonObject.put("code", 201);
+        jsonObject.put("message", "OK");
         jsonObject.put("data", data);
     }
 
-    public SuccessMessage(String message) {
-        jsonObject.put("code", 200);
+    public SuccessMessage(String message, T data) {
+        jsonObject.put("code", 201);
         jsonObject.put("message", message);
-        jsonObject.put("success", true);
-        jsonObject.put("type", "success");
-        jsonObject.put("data", null);
+        jsonObject.put("data", data);
     }
 
-    public SuccessMessage(String message, T data) {
-        jsonObject.put("code", 200);
+    public SuccessMessage(Integer code, T data) {
+        jsonObject.put("code", code);
+        jsonObject.put("message", "OK");
+        jsonObject.put("data", data);
+    }
+
+    public SuccessMessage(Integer code, String message, T data) {
+        jsonObject.put("code", code);
         jsonObject.put("message", message);
-        jsonObject.put("success", true);
-        jsonObject.put("type", "success");
         jsonObject.put("data", data);
     }
 

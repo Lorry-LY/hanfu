@@ -6,16 +6,22 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.zrh.hanfu.dao.UserMapper;
 import jakarta.annotation.Resource;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
 
+@Component
 public class JWTUtils {
-
-    @Resource
     private static UserMapper userMapper;
 
-    private static final long EXPIRE_TIME = 60L*60*1000 * 25;
+    @Autowired
+    public JWTUtils(UserMapper userMapper) {
+        JWTUtils.userMapper = userMapper;
+    }
 
+    private static final long EXPIRE_TIME = 60L*60*1000 * 25;
 
     //签发token
     public static String createToken(String userID,String password){

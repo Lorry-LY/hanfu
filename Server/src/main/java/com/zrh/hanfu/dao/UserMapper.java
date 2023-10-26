@@ -8,7 +8,7 @@ public class UserMapper {
 
     public JSONObject findUserByUserID(String userID){
         JSONObject jsonObject = new JSONObject();
-
+        jsonObject.put("password","123456");
 
         return jsonObject;
     }
@@ -18,7 +18,7 @@ public class UserMapper {
     }
 
     public String findPasswordByUserID(String userID){
-        return "";
+        return "123456";
     }
 
 }

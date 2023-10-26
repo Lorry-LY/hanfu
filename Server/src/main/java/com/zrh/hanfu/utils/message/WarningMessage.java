@@ -2,14 +2,30 @@ package com.zrh.hanfu.utils.message;
 
 import com.alibaba.fastjson2.JSONObject;
 
-public class WarningMessage extends ResponseMessage {
+public class WarningMessage<T> extends ResponseMessage {
 
-    public WarningMessage(String message) {
-        jsonObject.put("code", 249);
+    public WarningMessage(T data) {
+        jsonObject.put("code", 301);
+        jsonObject.put("message", "OK");
+        jsonObject.put("data", data);
+    }
+
+    public WarningMessage(String message, T data) {
+        jsonObject.put("code", 301);
         jsonObject.put("message", message);
-        jsonObject.put("success", false);
-        jsonObject.put("type", "warning");
-        jsonObject.put("data", null);
+        jsonObject.put("data", data);
+    }
+
+    public WarningMessage(Integer code, T data) {
+        jsonObject.put("code", 301);
+        jsonObject.put("message", "OK");
+        jsonObject.put("data", data);
+    }
+
+    public WarningMessage(Integer code, String message, T data) {
+        jsonObject.put("code", code);
+        jsonObject.put("message", message);
+        jsonObject.put("data", data);
     }
 
     public JSONObject getMessage() {
