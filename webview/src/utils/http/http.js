@@ -4,7 +4,7 @@ import axios from 'axios'
 export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
     type = type.toUpperCase();
     url = baseUrl + url;
-    console.log(type, url, data)
+    console.log(method, type, url, data)
     if (type === 'GET') {
         await axios.get(url, {params: data}).then(res => {
             if (res.data.message.success === true) {
