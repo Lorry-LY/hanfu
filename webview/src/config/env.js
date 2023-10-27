@@ -7,19 +7,23 @@
  *
  */
 let baseUrl = '';
+let proxyUrl = '';
 let routerMode = 'hash';
 let baseImgPath;
 
 if (process.env.NODE_ENV == 'development') {
     baseUrl = 'http://127.0.0.1:9999';
+    proxyUrl = '/development';
     baseImgPath = '/file/img/';
 } else {
     baseUrl = 'http://114.132.232.157';
+    proxyUrl = '/product';
     baseImgPath = '/file/img/';
 }
 
 export {
     baseUrl,
+    proxyUrl,
     routerMode,
     baseImgPath
 }

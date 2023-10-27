@@ -44,6 +44,23 @@ public class UserController {
     }
 
     @PassToken
+    @RequestMapping(value = "/notoken", method = RequestMethod.GET)
+    public JSONObject notoken(
+    ) {
+        //String ID = body.getString("ID");
+        return new SuccessMessage<>(new JSONObject()).getMessage();
+    }
+
+    @UserLoginToken
+    @RequestMapping(value = "/token", method = RequestMethod.GET)
+    public JSONObject token(
+
+    ) {
+        //String ID = body.getString("ID");
+        return new SuccessMessage<>(new JSONObject()).getMessage();
+    }
+
+    @PassToken
     @DeleteToken
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public JSONObject logout(
@@ -52,7 +69,7 @@ public class UserController {
 
         String userID = body.getString("userID");
 
-        
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("token","");
         return new SuccessMessage<>(jsonObject).getMessage();
