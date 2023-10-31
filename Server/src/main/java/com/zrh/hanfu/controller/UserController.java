@@ -26,8 +26,6 @@ public class UserController {
         String userID = body.getString("userID");
         String password = body.getString("password");
 
-
-
         String token = JWTUtils.createToken(userID, password);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("token",token);
@@ -60,7 +58,7 @@ public class UserController {
         return new SuccessMessage<>(new JSONObject()).getMessage();
     }
 
-    @PassToken
+    @UserLoginToken
     @DeleteToken
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public JSONObject logout(
@@ -69,9 +67,8 @@ public class UserController {
 
         String userID = body.getString("userID");
 
-
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("token","");
+        jsonObject.put("token","null");
         return new SuccessMessage<>(jsonObject).getMessage();
     }
 

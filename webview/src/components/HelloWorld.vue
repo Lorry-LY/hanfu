@@ -18,25 +18,29 @@ export default {
   },
   data() {
     return {
-      
+      res:null
     }
   },
   methods: {
     async btn_login() {
-      const res = await login({userID:"123",user:"zhangsan",password:"123456"})
-      console.log(res)
+      // const res = await login({userID:"123",user:"zhangsan",password:"123456"})
+      // console.log(res)
+      await login({userID:"123",user:"zhangsan",password:"123456"})
     },
     async btn_logout() {
-      const res = await logout({userID:"123"})
-      console.log(res)
+      // const res = await logout({userID:"123"})
+      // console.log(res)
+      this.res = await logout({userID:"123"})
     },
     async btn_noToken() {
-      const res = await notoken()
-      console.log(res)
+      // const res = await notoken()
+      // console.log(res)
+      await notoken()
     },
     async btn_haveToken() {
-      const res = await havetoken()
-      console.log(res)
+      // const res = await havetoken()
+      // console.log(res)
+      this.res = await havetoken()
     }
   },
 }

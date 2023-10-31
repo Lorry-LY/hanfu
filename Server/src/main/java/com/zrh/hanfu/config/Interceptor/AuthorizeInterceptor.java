@@ -41,7 +41,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
                 UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
                 if (userLoginToken.required()) {
                     // 执行认证
-                    if (token == null) return returnError(response, new ErrorMessage("no token!!"));
+                    if (token == null || token.equals("null")) return returnError(response, new ErrorMessage("no token!!"));
                     if (!JWTUtils.verify(token)) return returnError(response, new ErrorMessage("token wrong!!"));
                     if (JWTUtils.isOverTime(token)) return returnError(response,new ErrorMessage("token overtime!!"));
                 }
