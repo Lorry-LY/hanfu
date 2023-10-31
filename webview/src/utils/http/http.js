@@ -1,6 +1,5 @@
 import {proxyUrl} from '../../config/env'
 import axios from 'axios'
-// import { mapState, mapActions } from 'vuex'
 let myToken = null;
 
 export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
@@ -29,7 +28,8 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
                 }
             }else throw new Error(res);
         }).catch(e => {
-            throw new Error(e)
+            console.log(e);
+            return null;
         })
         return data;
     }
@@ -50,7 +50,8 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
                 }
             }else throw new Error(res);
         }).catch(e => {
-            throw new Error(e)
+            console.log(e);
+            return null;
         })
         return data;
     }
