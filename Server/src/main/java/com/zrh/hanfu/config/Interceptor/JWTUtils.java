@@ -1,16 +1,14 @@
 package com.zrh.hanfu.config.Interceptor;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.zrh.hanfu.dao.UserMapper;
-import jakarta.annotation.Resource;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Map;
 
 @Component
 public class JWTUtils {

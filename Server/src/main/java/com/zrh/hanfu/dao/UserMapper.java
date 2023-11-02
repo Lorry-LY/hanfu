@@ -1,6 +1,6 @@
 package com.zrh.hanfu.dao;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -24,7 +24,6 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
                     let token = data.token;
                     delete data.token;
                     myToken = token;
-                    console.log("mytoken:",myToken);
                 }
             }else throw new Error(res);
         }).catch(e => {
@@ -46,7 +45,6 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
                     let token = data.token;
                     delete data.token;
                     myToken = token;
-                    console.log("mytoken:",myToken);
                 }
             }else throw new Error(res);
         }).catch(e => {

@@ -1,15 +1,31 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <el-button type="primary" @click="btn_login">登录测试</el-button>
-    <el-button type="primary" @click="btn_haveToken">带Token接口测试</el-button>
-    <el-button type="primary" @click="btn_noToken">不带Token接口测试</el-button>
-    <el-button type="primary" @click="btn_logout">登出测试</el-button>
+    <el-row>
+      <el-button type="primary" @click="btn_login">登录测试</el-button>
+      <el-button type="primary" @click="btn_haveToken">带Token接口测试</el-button>
+      <el-button type="primary" @click="btn_noToken">不带Token接口测试</el-button>
+      <el-button type="primary" @click="btn_logout">登出测试</el-button>
+    </el-row>
+    <el-row>
+      <el-row>
+        <el-col :span="6"><el-label>手机号：</el-label></el-col>
+        <el-col :span="18"><el-input label="手机号" v-model="phoneNumber" placeholder="请输入手机号" /></el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="5"><el-label>验证码：</el-label></el-col>
+        <el-col :span="14"><el-input label="验证码" v-model="verify" placeholder="验证码" /></el-col>
+        <el-col :span="5"><el-button type="primary" @click="get_verify">获取验证码</el-button></el-col>
+      </el-row>
+      <el-row>
+        
+      </el-row>
+    </el-row>
   </div>
 </template>
 
 <script>
-import {login,logout,notoken,havetoken} from '@/utils/http/api'
+import {login,logout,notoken,havetoken,get_verify} from '@/utils/http/api'
 
 export default {
   name: 'HelloWorld',
@@ -18,7 +34,9 @@ export default {
   },
   data() {
     return {
-      res:null
+      res:null,
+      phoneNumber:"",
+      verify:""
     }
   },
   methods: {
@@ -41,6 +59,15 @@ export default {
       // const res = await havetoken()
       // console.log(res)
       this.res = await havetoken()
+    },
+    async get_verify() {
+      this.res = await get_verify({
+        phoneNumber:this.phoneNumber,
+        state:"login"
+      }).then(data=>{
+        this.verify = data.code;
+      })
+      
     }
   },
 }

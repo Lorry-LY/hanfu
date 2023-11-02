@@ -51,13 +51,6 @@
             <artifactId>junit</artifactId>
         </dependency>
 
-        <!-- JSON -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20230227</version>
-        </dependency>
-
         <!-- JWT -->
         <dependency>
             <groupId>com.auth0</groupId>
@@ -74,10 +67,24 @@
             <artifactId>spring-webmvc</artifactId>
             <version>6.0.9</version>
         </dependency>
+
+        <!-- JSON -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>2.0.25</version>
+        </dependency>
+
+        <!-- 阿里云验证码 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.5.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>
